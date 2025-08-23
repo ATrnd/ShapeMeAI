@@ -2807,10 +2807,10 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-alchemy-sdk@3.5.10:
-  version "3.5.10"
-  resolved "https://registry.yarnpkg.com/alchemy-sdk/-/alchemy-sdk-3.5.10.tgz#7b9f693b5b6af896e0500e653752a3cc14e844a7"
-  integrity sha512-DoYk4h5XbMLFyCXkSJBtPAEzM8REEyDtmXjj73jtdNZfQgUGubiltnVlgF+vEtdU8Gig2q9di753dpg3q//yZw==
+alchemy-sdk@^3.6.3:
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/alchemy-sdk/-/alchemy-sdk-3.6.3.tgz#d58ddf81881bb41cc7b3b29ce75dd0628a175645"
+  integrity sha512-AHSJGxJf3r8blvp97RatmiyBFTGtWH9pWDmdsv8mngdANuLvxRLhTU5Abf1lX2u6JzE7ulgG8/x0BsMLAEmAjA==
   dependencies:
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/abstract-provider" "^5.7.0"
