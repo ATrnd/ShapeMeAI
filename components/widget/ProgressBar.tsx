@@ -31,7 +31,7 @@ export function ProgressBar({ progress, status, className }: ProgressBarProps) {
         
         {/* Animated shimmer effect */}
         <div 
-          className="absolute top-0 left-0 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse rounded-full"
+          className="absolute top-0 left-0 h-full bg-gradient-to-r from-transparent via-white/30 dark:via-gray-400/30 to-transparent animate-pulse rounded-full"
           style={{ 
             width: `${progress}%`,
             transition: 'width 0.5s ease-in-out' 

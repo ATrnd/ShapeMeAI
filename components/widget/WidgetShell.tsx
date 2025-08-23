@@ -162,7 +162,7 @@ export function WidgetShell({ className }: WidgetShellProps) {
           </div>
           
           <div className="animate-pulse">
-            <div className="h-2 bg-gradient-to-r from-purple-200 to-blue-200 rounded-full"></div>
+            <div className="h-2 bg-gradient-to-r from-purple-200 to-blue-200 dark:from-purple-800 dark:to-blue-800 rounded-full"></div>
           </div>
         </Card>
       </div>

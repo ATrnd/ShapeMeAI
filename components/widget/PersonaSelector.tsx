@@ -25,8 +25,15 @@ export function PersonaSelector({ onPersonaSelect, analyzing }: PersonaSelectorP
           <Button
             onClick={() => onPersonaSelect(persona.id)}
             disabled={analyzing}
-            className="w-full"
-            style={{ backgroundColor: persona.color }}
+            className={`w-full text-white font-semibold ${
+              persona.id === 'renegade' 
+                ? 'bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700'
+                : persona.id === 'fomo'
+                ? 'bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700'
+                : persona.id === 'zen'
+                ? 'bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700'
+                : 'bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700'
+            }`}
           >
             {analyzing ? 'Analyzing...' : 'Select'}
           </Button>

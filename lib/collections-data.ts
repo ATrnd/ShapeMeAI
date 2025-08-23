@@ -52,7 +52,7 @@ export const PERSONA_DEFINITIONS: Record<PersonaType, PersonaDefinition> = {
     id: 'zen',
     emoji: '🧘',
     title: 'ZEN',
-    description: 'Mindful collector',
+    description: 'Mindful digital collector nerd',
     color: '#22c55e',
     theme: 'Mindfulness, balance, thoughtful curation'
   },
