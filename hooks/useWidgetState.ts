@@ -139,7 +139,7 @@ export function useWidgetState() {
     }));
   };
 
-  // Step 4: Persona analysis
+  // Step 4: Persona analysis with real AI
   const selectPersona = async (persona: PersonaType | null) => {
     if (!persona) {
       // Clear selection
@@ -156,29 +156,65 @@ export function useWidgetState() {
       ...prev,
       selectedPersona: persona,
       analyzing: true,
-      results: null
+      results: null,
+      error: null
     }));
 
     try {
-      // Simulate AI analysis delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log(`🤖 Starting AI analysis for ${persona.toUpperCase()} persona...`);
       
-      // Get persona-matched collections
-      const results = await getCollectionsByPersona(persona);
+      // Call our AI analysis API
+      const response = await fetch('/api/analyze-persona', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          persona,
+          collections: state.cachedCollections
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`AI analysis API failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'AI analysis failed');
+      }
+
+      console.log(`✅ AI analysis complete: ${data.analysis.selectedCollections.length} collections selected`);
+      console.log(`🧠 AI reasoning: ${data.analysis.reasoning}`);
       
       setState(prev => ({
         ...prev,
         analyzing: false,
-        results
+        results: data.analysis.selectedCollections
       }));
 
     } catch (error) {
-      console.error('Persona analysis failed:', error);
-      setState(prev => ({
-        ...prev,
-        analyzing: false,
-        error: 'Analysis failed, please try again'
-      }));
+      console.error('❌ AI persona analysis failed:', error);
+      
+      // Fallback to simple selection if AI fails
+      try {
+        console.log('🔄 Using fallback collection selection...');
+        const fallbackResults = await getCollectionsByPersona(persona);
+        
+        setState(prev => ({
+          ...prev,
+          analyzing: false,
+          results: fallbackResults,
+          error: `AI analysis failed, using fallback selection. ${error instanceof Error ? error.message : 'Unknown error'}`
+        }));
+      } catch (fallbackError) {
+        setState(prev => ({
+          ...prev,
+          analyzing: false,
+          error: 'Both AI analysis and fallback failed, please try again'
+        }));
+      }
     }
   };
 
