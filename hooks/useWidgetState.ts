@@ -12,6 +12,7 @@
 import { useState, useEffect } from 'react';
 import { loadCollectionsCache, getCollectionsByPersona, type Collection, type PersonaType } from '@/lib/collections-data';
 
+/** Complete widget state interface for 4-step flow */
 interface WidgetState {
   // Step 1: Loading
   isLoading: boolean;

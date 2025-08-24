@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { type PersonaType, PERSONA_DEFINITIONS } from '@/lib/collections-data';
 
+/** Props for PersonaSelector component */
 interface PersonaSelectorProps {
   onPersonaSelect: (persona: PersonaType) => void;
   analyzing: boolean;

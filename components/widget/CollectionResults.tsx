@@ -25,12 +25,14 @@ import {
   type AIAnalytics
 } from '@/lib/analytics-service';
 
+/** Props for CollectionResults component */
 interface CollectionResultsProps {
   persona: PersonaType;
   collections: Collection[];
   onBack: () => void;
 }
 
+/** Analytics state management for progressive disclosure */
 interface AnalyticsState {
   [contractAddress: string]: {
     expanded: boolean;

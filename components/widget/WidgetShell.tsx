@@ -19,6 +19,7 @@ import { CollectionResults } from './CollectionResults';
 import { useWidgetState } from '@/hooks/useWidgetState';
 import { cn } from '@/lib/utils';
 
+/** Props for WidgetShell component */
 interface WidgetShellProps {
   className?: string;
 }

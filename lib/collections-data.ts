@@ -7,6 +7,7 @@
  * @author ATrnd
  */
 
+/** NFT collection data structure from Shape Network */
 export interface Collection {
   contractAddress: string;
   name: string | null;
@@ -18,6 +19,7 @@ export interface Collection {
   originalUrl: string;
 }
 
+/** Collection cache metadata structure */
 export interface CollectionCache {
   collections: Collection[];
   lastUpdated: string;
@@ -25,8 +27,10 @@ export interface CollectionCache {
   totalCollections: number;
 }
 
+/** User persona types for NFT curation */
 export type PersonaType = 'renegade' | 'fomo' | 'zen' | 'chaos';
 
+/** Persona configuration structure */
 export interface PersonaDefinition {
   id: PersonaType;
   emoji: string;
