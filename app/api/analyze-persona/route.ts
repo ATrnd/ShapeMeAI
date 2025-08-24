@@ -1,10 +1,20 @@
-// API route for server-side AI persona analysis
-// POST /api/analyze-persona
+/**
+ * Server-side AI processing endpoint
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzePersonaCollections } from '@/lib/ai-service';
 import { PERSONA_DEFINITIONS, type PersonaType, type Collection } from '@/lib/collections-data';
 
+/**
+ * Server-side AI processing endpoint for persona analysis
+ * Validates inputs and delegates to Claude 3.5 Sonnet analysis service
+ */
 export async function POST(request: NextRequest) {
   try {
     const { persona, collections } = await request.json();

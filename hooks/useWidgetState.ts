@@ -1,5 +1,11 @@
-// Widget state management hook for ShapeMeAI 4-step flow
-// Manages: Loading → Ready → Expanded → Results
+/**
+ * Complete application state management (loading, personas, results, analytics)
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 'use client';
 
@@ -44,7 +50,10 @@ const INITIAL_STATE: WidgetState = {
 export function useWidgetState() {
   const [state, setState] = useState<WidgetState>(INITIAL_STATE);
 
-  // Step 1: Background cache system
+  /**
+   * Background cache initialization - fetches 16 Shape Network collections
+   * Progressive loading with real-time status updates
+   */
   const initiateBackgroundCache = async () => {
     setState(prev => ({
       ...prev,
@@ -119,9 +128,9 @@ export function useWidgetState() {
     }
   };
 
-  // Step 2: Widget activation (handled in Step 1)
-  
-  // Step 3: Widget expansion
+  /**
+   * Widget expansion - transitions to persona selection
+   */
   const expandWidget = () => {
     setState(prev => ({
       ...prev,
@@ -129,6 +138,9 @@ export function useWidgetState() {
     }));
   };
 
+  /**
+   * Widget collapse - resets to ready state
+   */
   const collapseWidget = () => {
     setState(prev => ({
       ...prev,
@@ -139,7 +151,10 @@ export function useWidgetState() {
     }));
   };
 
-  // Step 4: Persona analysis with real AI
+  /**
+   * AI persona analysis - calls Claude 3.5 Sonnet for collection curation
+   * On-demand processing with fallback to simple selection
+   */
   const selectPersona = async (persona: PersonaType | null) => {
     if (!persona) {
       // Clear selection
@@ -218,7 +233,7 @@ export function useWidgetState() {
     }
   };
 
-  // Auto-start cache on mount
+  /** Auto-initialize cache on component mount */
   useEffect(() => {
     if (!state.isLoading && !state.isDataReady) {
       initiateBackgroundCache();

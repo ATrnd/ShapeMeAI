@@ -1,5 +1,11 @@
-// Core data types and interfaces for Shape Network NFT collections
-// ShapeMeAI - AI-powered NFT discovery and analysis
+/**
+ * Types, persona definitions, collection interfaces
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 export interface Collection {
   contractAddress: string;
@@ -30,7 +36,7 @@ export interface PersonaDefinition {
   theme: string;
 }
 
-// Pre-defined personas for AI-powered NFT matching
+/** Pre-defined personas for AI-powered NFT matching */
 export const PERSONA_DEFINITIONS: Record<PersonaType, PersonaDefinition> = {
   renegade: {
     id: 'renegade',
@@ -66,10 +72,13 @@ export const PERSONA_DEFINITIONS: Record<PersonaType, PersonaDefinition> = {
   }
 };
 
-// Real collections cache - populated from Shape Network
+/** Collections cache populated from Shape Network via Alchemy SDK */
 let CACHED_COLLECTIONS: Collection[] = [];
 
-// Load collections data from Shape Network via Alchemy SDK
+/**
+ * Primary cache loader - fetches live Shape Network data via Alchemy SDK
+ * Returns cached data if available, otherwise initiates fresh fetch
+ */
 export async function loadCollectionsCache(
   onProgress?: (progress: number, status: string) => void
 ): Promise<Collection[]> {
@@ -118,7 +127,10 @@ export async function loadCollectionsCache(
   }
 }
 
-// Fallback collections if real fetch fails
+/**
+ * Fallback collections used when Shape Network fetch fails
+ * Returns static collection data with placeholder images
+ */
 async function loadFallbackCollections(): Promise<Collection[]> {
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 200));
@@ -157,11 +169,14 @@ async function loadFallbackCollections(): Promise<Collection[]> {
   ];
 }
 
-// Get collections for a specific persona (will be enhanced with AI)
+/**
+ * Simple persona mapping fallback when AI analysis fails
+ * Returns basic collection selection based on persona type
+ */
 export async function getCollectionsByPersona(persona: PersonaType): Promise<Collection[]> {
   const collections = await loadCollectionsCache();
   
-  // Simple mapping for now - will be replaced with AI analysis
+  /** Static mapping used as fallback when AI analysis fails */
   const personaMap: Record<PersonaType, number[]> = {
     renegade: [0], // First collection
     fomo: [1],     // Second collection  
@@ -173,12 +188,16 @@ export async function getCollectionsByPersona(persona: PersonaType): Promise<Col
   return indices.map(i => collections[i]).filter(Boolean);
 }
 
-// Get all raw collections (for AI analysis)
+/**
+ * Returns all cached collections for AI analysis processing
+ */
 export function getAllCollections(): Collection[] {
   return CACHED_COLLECTIONS;
 }
 
-// Clear cache (for development/testing)
+/**
+ * Clears collections cache for development and testing
+ */
 export function clearCollectionsCache(): void {
   CACHED_COLLECTIONS = [];
 }

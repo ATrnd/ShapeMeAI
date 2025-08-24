@@ -1,5 +1,11 @@
-// PersonaSelector component - Choose your NFT personality
-// Will be enhanced with full persona selection UI
+/**
+ * 4 persona cards with selection logic
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 'use client';
 
@@ -12,6 +18,10 @@ interface PersonaSelectorProps {
   analyzing: boolean;
 }
 
+/**
+ * Renders 4 persona cards with theme-based styling
+ * Triggers AI analysis on selection
+ */
 export function PersonaSelector({ onPersonaSelect, analyzing }: PersonaSelectorProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

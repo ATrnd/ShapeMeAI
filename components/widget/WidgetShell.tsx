@@ -1,5 +1,11 @@
-// ShapeMeAI Widget Shell - Main container for AI-powered NFT discovery
-// Implements 4-step progressive disclosure: Loading → Ready → Expanded → Results
+/**
+ * Main container, 4-step flow orchestration
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 'use client';
 
@@ -17,6 +23,10 @@ interface WidgetShellProps {
   className?: string;
 }
 
+/**
+ * Orchestrates 4-step progressive disclosure flow
+ * Loading → Ready → Expanded → Results
+ */
 export function WidgetShell({ className }: WidgetShellProps) {
   const {
     isLoading,
@@ -35,7 +45,7 @@ export function WidgetShell({ className }: WidgetShellProps) {
     retryCache
   } = useWidgetState();
 
-  // Step 1: Loading state
+  /** Step 1: Loading state - Background cache initialization */
   if (isLoading || !isDataReady) {
     return (
       <div className={cn("flex items-center justify-center min-h-screen", className)}>
@@ -70,7 +80,7 @@ export function WidgetShell({ className }: WidgetShellProps) {
     );
   }
 
-  // Step 2: Ready state (collapsed widget)
+  /** Step 2: Ready state - Widget activation prompt */
   if (widgetActive && !widgetExpanded) {
     return (
       <div className={cn("flex items-center justify-center min-h-screen", className)}>
@@ -100,7 +110,7 @@ export function WidgetShell({ className }: WidgetShellProps) {
     );
   }
 
-  // Step 3: Expanded state (persona selection)
+  /** Step 3: Expanded state - Persona selection interface */
   if (widgetExpanded && !selectedPersona) {
     return (
       <div className={cn("min-h-screen p-4", className)}>
@@ -133,7 +143,7 @@ export function WidgetShell({ className }: WidgetShellProps) {
     );
   }
 
-  // Step 4: Results state
+  /** Step 4: Results state - AI-curated collections display */
   if (selectedPersona && results) {
     return (
       <div className={cn("min-h-screen", className)}>
@@ -146,7 +156,7 @@ export function WidgetShell({ className }: WidgetShellProps) {
     );
   }
 
-  // Loading state for persona analysis
+  /** Loading state during AI persona analysis */
   if (selectedPersona && analyzing) {
     return (
       <div className={cn("flex items-center justify-center min-h-screen", className)}>

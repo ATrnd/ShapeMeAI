@@ -1,5 +1,11 @@
-// CollectionResults component - Display AI-curated NFT collections with enhanced analytics
-// Features 4 types of deep-dive analytics per collection
+/**
+ * Results display + analytics interface
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 'use client';
 
@@ -43,11 +49,18 @@ interface AnalyticsState {
   };
 }
 
+/**
+ * Displays AI-curated collections with progressive disclosure analytics
+ * Each collection has 4 analytics types: Market, Holder, Activity, AI Deep Dive
+ */
 export function CollectionResults({ persona, collections, onBack }: CollectionResultsProps) {
   const personaInfo = PERSONA_DEFINITIONS[persona];
   const [analyticsState, setAnalyticsState] = useState<AnalyticsState>({});
 
-  // Toggle analytics panel for a collection
+  /**
+   * Toggles analytics panel expansion for a specific collection
+   * Initializes analytics state if not present
+   */
   const toggleAnalytics = (contractAddress: string) => {
     setAnalyticsState(prev => ({
       ...prev,
@@ -65,7 +78,10 @@ export function CollectionResults({ persona, collections, onBack }: CollectionRe
     }));
   };
 
-  // Fetch specific analytics type
+  /**
+   * Fetches analytics data for specific type (market/holder/activity/ai)
+   * Sets loading state, calls appropriate service function, updates UI
+   */
   const fetchAnalytics = async (
     collection: Collection, 
     type: 'market' | 'holder' | 'activity' | 'ai'

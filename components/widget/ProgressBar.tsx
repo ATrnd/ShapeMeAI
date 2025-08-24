@@ -1,5 +1,11 @@
-// Animated progress bar for ShapeMeAI loading states
-// Shows real-time progress during data fetching and AI analysis
+/**
+ * Animated loading states with bouncing dots
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 'use client';
 
@@ -12,6 +18,10 @@ interface ProgressBarProps {
   className?: string;
 }
 
+/**
+ * Loading component with shimmer effects and bouncing dots
+ * Real-time progress updates during blockchain data fetch
+ */
 export function ProgressBar({ progress, status, className }: ProgressBarProps) {
   return (
     <div className={cn("space-y-3", className)}>

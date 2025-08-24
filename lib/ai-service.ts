@@ -1,18 +1,27 @@
-// AI service for ShapeMeAI - Claude integration for persona-based NFT analysis
-// Uses sophisticated prompts to match collections to personality types
+/**
+ * Claude API integration with sophisticated persona prompts
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 import { type Collection, type PersonaType, type PersonaDefinition } from './collections-data';
 
-// AI Analysis Result Interface
+/** AI Analysis Result Interface */
 export interface PersonaAnalysisResult {
   selectedCollections: Collection[];
   reasoning: string;
   confidence: number; // 0-1 scale
 }
 
-// Test Claude API connection
+/**
+ * Health check for Claude API integration
+ * Validates API key and connection status
+ */
 export async function testClaudeConnection(): Promise<boolean> {
   try {
     if (!process.env.ANTHROPIC_API_KEY) {
@@ -42,7 +51,10 @@ export async function testClaudeConnection(): Promise<boolean> {
   }
 }
 
-// Analyze collections for a specific persona using Claude
+/**
+ * Core AI analysis function - matches collections to persona using Claude 3.5 Sonnet
+ * Uses sophisticated cultural analysis prompts tailored per persona
+ */
 export async function analyzePersonaCollections(
   persona: PersonaType,
   personaDefinition: PersonaDefinition,
@@ -82,7 +94,10 @@ export async function analyzePersonaCollections(
   }
 }
 
-// Create sophisticated persona-specific prompts
+/**
+ * Creates sophisticated persona-specific prompts for Claude analysis
+ * Tailors cultural analysis criteria based on persona type
+ */
 function createPersonaPrompt(persona: PersonaType, personaDefinition: PersonaDefinition, collections: Collection[]): string {
   const basePrompt = `You are an expert NFT cultural analyst specializing in blockchain subcultures and digital art movements on Shape Network.
 
@@ -165,7 +180,10 @@ Select 3-4 collections that most authentically represent the ${personaDefinition
   return fullPrompt;
 }
 
-// Parse Claude's JSON response
+/**
+ * Parses Claude's JSON response into structured analysis result
+ * Handles response validation and fallback error handling
+ */
 function parseClaudeResponse(response: string, allCollections: Collection[]): PersonaAnalysisResult {
   try {
     // Extract JSON from response (handle any markdown formatting)

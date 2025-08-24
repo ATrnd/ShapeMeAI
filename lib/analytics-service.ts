@@ -1,18 +1,24 @@
-// Enhanced analytics service for ShapeMeAI collection analysis
-// Provides 4 types of deep-dive analytics using live Alchemy data
+/**
+ * 4 analytics functions (market, holder, activity, AI analysis)
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 import { Alchemy, Network } from 'alchemy-sdk';
 import { type Collection } from './collections-data';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
-// Initialize Alchemy for Shape Network
+/** Alchemy SDK instance for Shape Network blockchain data */
 const alchemy = new Alchemy({
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY || process.env.ALCHEMY_API_KEY,
   network: Network.SHAPE_MAINNET,
 });
 
-// Analytics Data Interfaces
+/** Market health analytics data structure */
 export interface MarketAnalytics {
   transferCount24h: number;
   uniqueTraders24h: number;
@@ -21,6 +27,7 @@ export interface MarketAnalytics {
   avgTransactionValue: number;
 }
 
+/** Holder distribution analytics data structure */
 export interface HolderAnalytics {
   totalHolders: number;
   concentrationRatio: number; // % held by top 10 holders
@@ -29,6 +36,7 @@ export interface HolderAnalytics {
   distribution: 'concentrated' | 'distributed' | 'balanced';
 }
 
+/** Activity trends analytics data structure */
 export interface ActivityAnalytics {
   transferVelocity: number; // transfers per day
   tradingPattern: 'active' | 'accumulating' | 'dormant';
@@ -37,6 +45,7 @@ export interface ActivityAnalytics {
   trendDirection: 'up' | 'down' | 'stable';
 }
 
+/** AI-powered investment analysis data structure */
 export interface AIAnalytics {
   investmentThesis: 'buy' | 'hold' | 'avoid';
   confidenceScore: number; // 0-100
@@ -48,7 +57,10 @@ export interface AIAnalytics {
   reasoning: string;
 }
 
-// Fetch Market Health Analytics
+/**
+ * Market health analysis - live transfer data + momentum classification
+ * Simple logic-based analysis, not AI-powered
+ */
 export async function fetchMarketHealth(collection: Collection): Promise<MarketAnalytics> {
   try {
     console.log(`📊 Fetching market health for ${collection.name}...`);
@@ -94,7 +106,10 @@ export async function fetchMarketHealth(collection: Collection): Promise<MarketA
   }
 }
 
-// Fetch Holder Analysis
+/**
+ * Holder distribution analysis using ownership data
+ * Calculates concentration ratios and whale detection via statistical estimations
+ */
 export async function fetchHolderAnalysis(collection: Collection): Promise<HolderAnalytics> {
   try {
     console.log(`👥 Fetching holder analysis for ${collection.name}...`);
@@ -127,7 +142,10 @@ export async function fetchHolderAnalysis(collection: Collection): Promise<Holde
   }
 }
 
-// Fetch Activity Trends
+/**
+ * Activity trends analysis from recent transfer data
+ * Extrapolates daily velocity and classifies trading patterns via threshold logic
+ */
 export async function fetchActivityTrends(collection: Collection): Promise<ActivityAnalytics> {
   try {
     console.log(`📈 Fetching activity trends for ${collection.name}...`);
@@ -170,7 +188,10 @@ export async function fetchActivityTrends(collection: Collection): Promise<Activ
   }
 }
 
-// AI Deep Dive Analysis
+/**
+ * AI-powered investment analysis using Claude 3.5 Sonnet
+ * Combines market data with cultural significance assessment
+ */
 export async function fetchAIAnalysis(
   collection: Collection,
   marketHealth?: MarketAnalytics,

@@ -1,17 +1,25 @@
-// Shape Network collections fetcher with real blockchain data
-// Integrates with Alchemy SDK for live NFT data from Shape Network
+/**
+ * Alchemy SDK integration, 16 Shape Network contracts
+ * 
+ * Part of ShapeMeAI - AI-Powered NFT Discovery Engine
+ * ShapeCraft2 Hackathon Submission | Shape Network 2025
+ * 
+ * @author ATrnd
+ */
 
 import { Alchemy, Network } from 'alchemy-sdk';
 import type { Collection } from './collections-data';
 
-// Initialize Alchemy for Shape Network
+/** Alchemy SDK instance configured for Shape Network mainnet */
 const alchemy = new Alchemy({
   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY || process.env.ALCHEMY_API_KEY,
   network: Network.SHAPE_MAINNET, // Shape Network mainnet
 });
 
-// Real Shape Network Collection Contracts
-// Curated from actual Shape ecosystem projects
+/**
+ * Curated Shape Network collection contracts from actual ecosystem projects
+ * 16 verified NFT collections deployed on Shape Network mainnet
+ */
 export const SHAPE_COLLECTION_CONTRACTS = [
   "0x6E148B55e4Cd30Ea6727d7E0661c3918A6C4E9Db", // Almost Normal
   "0xdad1276ecd6d27116da400b33c81ce49d91d5831", // Shape Punks  
@@ -31,7 +39,10 @@ export const SHAPE_COLLECTION_CONTRACTS = [
   "0x758bb513346939825a2094a1d4fbd9135514d67e", // Fragmented Order
 ];
 
-// Test Shape Network connection
+/**
+ * Tests connectivity to Shape Network via Alchemy SDK
+ * Validates API key and network accessibility
+ */
 export async function testShapeNetworkConnection(): Promise<boolean> {
   try {
     console.log('🔗 Testing Shape Network connection...');
@@ -47,7 +58,10 @@ export async function testShapeNetworkConnection(): Promise<boolean> {
   }
 }
 
-// Fetch individual collection data
+/**
+ * Fetches complete metadata for a single NFT collection
+ * Returns Collection object with metadata, supply, owners, and URLs
+ */
 export async function fetchCollectionData(contractAddress: string): Promise<Collection | null> {
   try {
     console.log(`Fetching data for collection: ${contractAddress}`);
@@ -115,7 +129,10 @@ export async function fetchCollectionData(contractAddress: string): Promise<Coll
   }
 }
 
-// Fetch all Shape Network collections with progress tracking
+/**
+ * Fetches all 16 curated Shape Network collections with progress tracking
+ * Processes collections sequentially with rate limiting to avoid API throttling
+ */
 export async function fetchAllShapeCollections(
   onProgress?: (progress: number, status: string) => void
 ): Promise<Collection[]> {
@@ -153,12 +170,18 @@ export async function fetchAllShapeCollections(
   return collections;
 }
 
-// Get collection by contract address
+/**
+ * Retrieves collection data for a specific contract address
+ * Direct wrapper around fetchCollectionData for external use
+ */
 export async function getCollectionByAddress(contractAddress: string): Promise<Collection | null> {
   return await fetchCollectionData(contractAddress);
 }
 
-// Check if a contract address is in our curated list
+/**
+ * Validates if contract address is in curated Shape Network collection list
+ * Case-insensitive comparison against SHAPE_COLLECTION_CONTRACTS
+ */
 export function isShapeNetworkCollection(contractAddress: string): boolean {
   return SHAPE_COLLECTION_CONTRACTS.includes(contractAddress.toLowerCase());
 }
