@@ -201,95 +201,135 @@ export async function fetchAIAnalysis(
   try {
     console.log(`🧠 Fetching AI analysis for ${collection.name}...`);
     
-    // Generate intelligent analysis based on available data
-    const hasMarketData = !!marketHealth;
-    const hasHolderData = !!holderAnalysis;
-    const hasActivityData = !!activityTrends;
-    
-    // Calculate investment thesis based on available data
-    let investmentThesis: 'buy' | 'hold' | 'avoid' = 'hold';
-    let confidenceScore = 50;
-    
-    if (hasMarketData && hasHolderData && hasActivityData) {
-      // We have comprehensive data - make informed decision
-      const marketScore = marketHealth!.momentum === 'bullish' ? 80 : 
-                         marketHealth!.momentum === 'neutral' ? 60 : 40;
-      const holderScore = holderAnalysis!.concentrationRatio < 50 ? 80 : 60;
-      const activityScore = activityTrends!.tradingPattern === 'active' ? 80 : 
-                           activityTrends!.tradingPattern === 'accumulating' ? 70 : 50;
-      
-      const overallScore = (marketScore + holderScore + activityScore) / 3;
-      
-      if (overallScore > 75) {
-        investmentThesis = 'buy';
-        confidenceScore = overallScore;
-      } else if (overallScore < 50) {
-        investmentThesis = 'avoid';
-        confidenceScore = overallScore;
-      } else {
-        investmentThesis = 'hold';
-        confidenceScore = overallScore;
-      }
-    } else {
-      // Limited data - conservative approach
-      const supply = collection.totalSupply || 0;
-      const holders = collection.owners || 0;
-      
-      if (supply > 0 && holders > supply * 0.3) {
-        investmentThesis = 'buy';
-        confidenceScore = 65;
-      } else if (supply > 10000) {
-        investmentThesis = 'avoid';
-        confidenceScore = 60;
-      }
-    }
-    
-    // Generate dynamic risk factors based on data
-    const riskFactors: string[] = [];
-    if (hasMarketData && marketHealth!.liquidityScore < 30) {
-      riskFactors.push('Low liquidity score may impact trading');
-    }
-    if (hasHolderData && holderAnalysis!.concentrationRatio > 70) {
-      riskFactors.push('High holder concentration risk');
-    }
-    if (!hasActivityData || activityTrends?.transferVelocity < 5) {
-      riskFactors.push('Limited recent trading activity');
-    }
-    if (riskFactors.length === 0) {
-      riskFactors.push('General market volatility', 'Shape Network adoption risk');
-    }
-    
-    // Generate opportunities based on data
-    const opportunities: string[] = [];
-    if (hasMarketData && marketHealth!.momentum === 'bullish') {
-      opportunities.push('Positive market momentum');
-    }
-    if (hasHolderData && holderAnalysis!.crossCollectionHolders > holderAnalysis!.totalHolders * 0.5) {
-      opportunities.push('Strong cross-collection network effects');
-    }
-    if (hasActivityData && activityTrends!.gasEfficiency === 'high') {
-      opportunities.push('Optimized for Shape Network efficiency');
-    }
-    if (opportunities.length === 0) {
-      opportunities.push('Early Shape Network ecosystem participation', 'Potential for community growth');
+    // Call server-side AI analysis endpoint for genuine Claude integration
+    const response = await fetch('/api/ai-analysis', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        collection,
+        marketHealth,
+        holderAnalysis,
+        activityTrends
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`AI analysis API failed: ${response.statusText}`);
     }
 
-    return {
-      investmentThesis,
-      confidenceScore: Math.round(confidenceScore),
-      culturalSignificance: `${collection.name} represents ${collection.totalSupply < 1000 ? 'exclusive' : 'accessible'} digital culture on Shape Network, appealing to ${investmentThesis === 'buy' ? 'growth-oriented' : investmentThesis === 'avoid' ? 'risk-averse' : 'balanced'} collectors.`,
-      riskFactors: riskFactors.slice(0, 3),
-      opportunities: opportunities.slice(0, 3),
-      comparableCollections: [
-        collection.totalSupply < 1000 ? 'CryptoPunks (exclusivity)' : 'Bored Apes (community)',
-        collection.owners > 500 ? 'Azuki (engagement)' : 'Moonbirds (curation)'
-      ],
-      collectorProfile: `${investmentThesis === 'buy' ? 'Aggressive' : investmentThesis === 'avoid' ? 'Conservative' : 'Moderate'} collectors interested in ${collection.totalSupply < 1000 ? 'rare' : 'community-driven'} Shape Network assets`,
-      reasoning: `${collection.name} shows ${confidenceScore > 70 ? 'strong' : confidenceScore > 50 ? 'moderate' : 'limited'} potential with ${collection.owners} holders and ${collection.totalSupply} supply. ${hasMarketData ? `Market momentum is ${marketHealth!.momentum}.` : 'Limited market data available.'} ${hasHolderData ? `Ownership is ${holderAnalysis!.concentrationRatio > 50 ? 'concentrated' : 'distributed'}.` : ''}`
-    };
+    const data = await response.json();
+    
+    if (!data.success) {
+      throw new Error(data.error || 'AI analysis failed');
+    }
+
+    console.log(`✅ Claude AI analysis complete for ${collection.name} - ${data.analysis.confidenceScore}% confidence`);
+    console.log(`🧠 Claude reasoning: ${data.analysis.reasoning}`);
+    
+    return data.analysis;
 
   } catch (error) {
-    console.error(`❌ AI analysis fetch failed for ${collection.name}:`, error);
-    throw error;
+    console.error(`❌ Claude AI analysis failed for ${collection.name}:`, error);
+    
+    // Fallback to algorithmic analysis if Claude fails
+    console.log('🔄 Using fallback algorithmic analysis...');
+    return await getFallbackAnalysis(collection, marketHealth, holderAnalysis, activityTrends);
   }
+}
+
+/**
+ * Fallback analysis using algorithmic logic when Claude API fails
+ * Maintains consistent output structure for reliable user experience
+ */
+async function getFallbackAnalysis(
+  collection: Collection,
+  marketHealth?: MarketAnalytics,
+  holderAnalysis?: HolderAnalytics, 
+  activityTrends?: ActivityAnalytics
+): Promise<AIAnalytics> {
+  // Generate analysis using original algorithmic logic
+  const hasMarketData = !!marketHealth;
+  const hasHolderData = !!holderAnalysis;
+  const hasActivityData = !!activityTrends;
+  
+  let investmentThesis: 'buy' | 'hold' | 'avoid' = 'hold';
+  let confidenceScore = 50;
+  
+  if (hasMarketData && hasHolderData && hasActivityData) {
+    const marketScore = marketHealth!.momentum === 'bullish' ? 80 : 
+                       marketHealth!.momentum === 'neutral' ? 60 : 40;
+    const holderScore = holderAnalysis!.concentrationRatio < 50 ? 80 : 60;
+    const activityScore = activityTrends!.tradingPattern === 'active' ? 80 : 
+                         activityTrends!.tradingPattern === 'accumulating' ? 70 : 50;
+    
+    const overallScore = (marketScore + holderScore + activityScore) / 3;
+    
+    if (overallScore > 75) {
+      investmentThesis = 'buy';
+      confidenceScore = overallScore;
+    } else if (overallScore < 50) {
+      investmentThesis = 'avoid';
+      confidenceScore = overallScore;
+    } else {
+      investmentThesis = 'hold';
+      confidenceScore = overallScore;
+    }
+  } else {
+    const supply = collection.totalSupply || 0;
+    const holders = collection.owners || 0;
+    
+    if (supply > 0 && holders > supply * 0.3) {
+      investmentThesis = 'buy';
+      confidenceScore = 65;
+    } else if (supply > 10000) {
+      investmentThesis = 'avoid';
+      confidenceScore = 60;
+    }
+  }
+  
+  // Generate dynamic risk factors
+  const riskFactors: string[] = [];
+  if (hasMarketData && marketHealth!.liquidityScore < 30) {
+    riskFactors.push('Low liquidity score may impact trading');
+  }
+  if (hasHolderData && holderAnalysis!.concentrationRatio > 70) {
+    riskFactors.push('High holder concentration risk');
+  }
+  if (!hasActivityData || activityTrends?.transferVelocity < 5) {
+    riskFactors.push('Limited recent trading activity');
+  }
+  if (riskFactors.length === 0) {
+    riskFactors.push('General market volatility', 'Shape Network adoption risk');
+  }
+  
+  // Generate opportunities
+  const opportunities: string[] = [];
+  if (hasMarketData && marketHealth!.momentum === 'bullish') {
+    opportunities.push('Positive market momentum');
+  }
+  if (hasHolderData && holderAnalysis!.crossCollectionHolders > holderAnalysis!.totalHolders * 0.5) {
+    opportunities.push('Strong cross-collection network effects');
+  }
+  if (hasActivityData && activityTrends!.gasEfficiency === 'high') {
+    opportunities.push('Optimized for Shape Network efficiency');
+  }
+  if (opportunities.length === 0) {
+    opportunities.push('Early Shape Network ecosystem participation', 'Potential for community growth');
+  }
+
+  return {
+    investmentThesis,
+    confidenceScore: Math.round(confidenceScore),
+    culturalSignificance: `${collection.name} represents ${collection.totalSupply < 1000 ? 'exclusive' : 'accessible'} digital culture on Shape Network, appealing to ${investmentThesis === 'buy' ? 'growth-oriented' : investmentThesis === 'avoid' ? 'risk-averse' : 'balanced'} collectors.`,
+    riskFactors: riskFactors.slice(0, 3),
+    opportunities: opportunities.slice(0, 3),
+    comparableCollections: [
+      collection.totalSupply < 1000 ? 'CryptoPunks (exclusivity)' : 'Bored Apes (community)',
+      collection.owners > 500 ? 'Azuki (engagement)' : 'Moonbirds (curation)'
+    ],
+    collectorProfile: `${investmentThesis === 'buy' ? 'Aggressive' : investmentThesis === 'avoid' ? 'Conservative' : 'Moderate'} collectors interested in ${collection.totalSupply < 1000 ? 'rare' : 'community-driven'} Shape Network assets`,
+    reasoning: `${collection.name} shows ${confidenceScore > 70 ? 'strong' : confidenceScore > 50 ? 'moderate' : 'limited'} potential with ${collection.owners} holders and ${collection.totalSupply} supply. ${hasMarketData ? `Market momentum is ${marketHealth!.momentum}.` : 'Limited market data available.'} ${hasHolderData ? `Ownership is ${holderAnalysis!.concentrationRatio > 50 ? 'concentrated' : 'distributed'}.` : ''}`
+  };
 }
