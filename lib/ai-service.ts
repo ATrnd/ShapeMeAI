@@ -38,7 +38,6 @@ export async function testClaudeConnection(): Promise<boolean> {
     const { text } = await generateText({
       model: anthropic('claude-3-5-sonnet-20241022'),
       prompt: 'Respond with exactly "OK" if you can read this.',
-      maxTokens: 10,
     });
 
     const isConnected = text.trim().toLowerCase().includes('ok');

@@ -11,8 +11,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
-import type { Collection, AIAnalytics } from '@/lib/collections-data';
-import type { MarketAnalytics, HolderAnalytics, ActivityAnalytics } from '@/lib/analytics-service';
+import type { Collection } from '@/lib/collections-data';
+import type { MarketAnalytics, HolderAnalytics, ActivityAnalytics, AIAnalytics } from '@/lib/analytics-service';
 
 /**
  * Server-side AI analysis endpoint for investment thesis generation
@@ -20,7 +20,12 @@ import type { MarketAnalytics, HolderAnalytics, ActivityAnalytics } from '@/lib/
  */
 export async function POST(request: NextRequest) {
   try {
-    const { collection, marketHealth, holderAnalysis, activityTrends } = await request.json();
+    const { collection, marketHealth, holderAnalysis, activityTrends }: {
+      collection: Collection;
+      marketHealth?: MarketAnalytics;
+      holderAnalysis?: HolderAnalytics;
+      activityTrends?: ActivityAnalytics;
+    } = await request.json();
 
     // Validate inputs
     if (!collection || !collection.contractAddress) {
@@ -110,7 +115,6 @@ Focus on providing actionable investment insights that combine technical analysi
     const { text } = await generateText({
       model: anthropic('claude-3-5-sonnet-20241022'),
       prompt,
-      maxTokens: 1000,
     });
 
     // Parse and validate Claude's response

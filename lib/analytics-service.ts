@@ -7,7 +7,7 @@
  * @author ATrnd
  */
 
-import { Alchemy, Network } from 'alchemy-sdk';
+import { Alchemy, Network, AssetTransfersCategory, SortingOrder } from 'alchemy-sdk';
 import { type Collection } from './collections-data';
 
 /** Alchemy SDK instance for Shape Network blockchain data */
@@ -66,9 +66,9 @@ export async function fetchMarketHealth(collection: Collection): Promise<MarketA
     // Get recent transfers for market activity analysis
     const transfers = await alchemy.core.getAssetTransfers({
       contractAddresses: [collection.contractAddress],
-      category: ['erc721' as any],
+      category: [AssetTransfersCategory.ERC721],
       maxCount: 50,
-      order: 'desc' as any
+      order: SortingOrder.DESCENDING
     });
 
     const recentTransfers = transfers.transfers.slice(0, 20);
@@ -151,9 +151,9 @@ export async function fetchActivityTrends(collection: Collection): Promise<Activ
     // Get recent transfers
     const transfers = await alchemy.core.getAssetTransfers({
       contractAddresses: [collection.contractAddress],
-      category: ['erc721' as any],
+      category: [AssetTransfersCategory.ERC721],
       maxCount: 20,
-      order: 'desc' as any
+      order: SortingOrder.DESCENDING
     });
 
     const recentTransfers = transfers.transfers.slice(0, 10);
@@ -320,14 +320,14 @@ async function getFallbackAnalysis(
   return {
     investmentThesis,
     confidenceScore: Math.round(confidenceScore),
-    culturalSignificance: `${collection.name} represents ${collection.totalSupply < 1000 ? 'exclusive' : 'accessible'} digital culture on Shape Network, appealing to ${investmentThesis === 'buy' ? 'growth-oriented' : investmentThesis === 'avoid' ? 'risk-averse' : 'balanced'} collectors.`,
+    culturalSignificance: `${collection.name} represents ${(collection.totalSupply ?? 10000) < 1000 ? 'exclusive' : 'accessible'} digital culture on Shape Network, appealing to ${investmentThesis === 'buy' ? 'growth-oriented' : investmentThesis === 'avoid' ? 'risk-averse' : 'balanced'} collectors.`,
     riskFactors: riskFactors.slice(0, 3),
     opportunities: opportunities.slice(0, 3),
     comparableCollections: [
-      collection.totalSupply < 1000 ? 'CryptoPunks (exclusivity)' : 'Bored Apes (community)',
-      collection.owners > 500 ? 'Azuki (engagement)' : 'Moonbirds (curation)'
+      (collection.totalSupply ?? 10000) < 1000 ? 'CryptoPunks (exclusivity)' : 'Bored Apes (community)',
+      (collection.owners ?? 0) > 500 ? 'Azuki (engagement)' : 'Moonbirds (curation)'
     ],
-    collectorProfile: `${investmentThesis === 'buy' ? 'Aggressive' : investmentThesis === 'avoid' ? 'Conservative' : 'Moderate'} collectors interested in ${collection.totalSupply < 1000 ? 'rare' : 'community-driven'} Shape Network assets`,
-    reasoning: `${collection.name} shows ${confidenceScore > 70 ? 'strong' : confidenceScore > 50 ? 'moderate' : 'limited'} potential with ${collection.owners} holders and ${collection.totalSupply} supply. ${hasMarketData ? `Market momentum is ${marketHealth!.momentum}.` : 'Limited market data available.'} ${hasHolderData ? `Ownership is ${holderAnalysis!.concentrationRatio > 50 ? 'concentrated' : 'distributed'}.` : ''}`
+    collectorProfile: `${investmentThesis === 'buy' ? 'Aggressive' : investmentThesis === 'avoid' ? 'Conservative' : 'Moderate'} collectors interested in ${(collection.totalSupply ?? 10000) < 1000 ? 'rare' : 'community-driven'} Shape Network assets`,
+    reasoning: `${collection.name} shows ${confidenceScore > 70 ? 'strong' : confidenceScore > 50 ? 'moderate' : 'limited'} potential with ${collection.owners ?? 'unknown'} holders and ${collection.totalSupply ?? 'unknown'} supply. ${hasMarketData ? `Market momentum is ${marketHealth!.momentum}.` : 'Limited market data available.'} ${hasHolderData ? `Ownership is ${holderAnalysis!.concentrationRatio > 50 ? 'concentrated' : 'distributed'}.` : ''}`
   };
 }
