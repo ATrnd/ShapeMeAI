@@ -9,8 +9,6 @@
 
 import { Alchemy, Network } from 'alchemy-sdk';
 import { type Collection } from './collections-data';
-import { createAnthropic } from '@ai-sdk/anthropic';
-import { generateText } from 'ai';
 
 /** Alchemy SDK instance for Shape Network blockchain data */
 const alchemy = new Alchemy({

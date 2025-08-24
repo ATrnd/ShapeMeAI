@@ -11,7 +11,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
-import type { Collection, MarketAnalytics, HolderAnalytics, ActivityAnalytics, AIAnalytics } from '@/lib/collections-data';
+import type { Collection, AIAnalytics } from '@/lib/collections-data';
+import type { MarketAnalytics, HolderAnalytics, ActivityAnalytics } from '@/lib/analytics-service';
 
 /**
  * Server-side AI analysis endpoint for investment thesis generation
