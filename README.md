@@ -22,6 +22,7 @@ Find your perfect NFT collections through AI persona matching and cultural analy
 ### Live Demo
 - **Deployed URL**: [ShapeMeAI](https://shape-me-40yst1bun-atrnds-projects.vercel.app/)
 - **Screen Recording**: [Vision | Demo Walkthrough](https://github.com/ATrnd/ShapeMeAI/raw/main/demo/ShapeMeAI.mp4)
+https://shape-me-40yst1bun-atrnds-projects.vercel.app/?_vercel_share=7m6TBORMZ6HlD1aVI9ydHzAmsjQYWqzd
 
 ---
 
